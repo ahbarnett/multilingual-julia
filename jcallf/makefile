@@ -1,5 +1,7 @@
 -include ../make.inc
 
+.PHONY: demo1 demomp
+
 default: demo1 demomp
 
 demo1: demo1.so
@@ -12,3 +14,5 @@ demomp: demomp.so
 demomp.so: demomp.f90
 	$(FC) -O2 demomp.f90 -o demomp.so -shared -fPIC -fopenmp
 
+clean:
+	rm -f *.so
