@@ -2,8 +2,7 @@
 
 Examples of interfacing between julia and low-level languages.
 Taken from julia docs, StackOverflow, etc, by Alex Barnett.
-Tested in a linux environment only
-(Ubuntu 16.04 LTS plus GCC9, julia 1.5.2).
+Tested in a linux environment only (Ubuntu 16.04 LTS plus GCC9, julia 1.5.2).
 
 ### Directories
 
@@ -11,9 +10,11 @@ Tested in a linux environment only
 `ccallj` : C calls julia ("embedding")  
 
 Each directory has its own makefile. They all read any common settings placed in
- `make.inc` (see `make.inc.example`).
+ `make.inc` (eg copy `make.inc.example` to this file). Some demos explore multithreading.
 
 ### To do
+
+* F calling J, via C wrappers I guess
 
 * J calling F with non-void return type, eg `ddot` LAPACK in manual 27.5
 

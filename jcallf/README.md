@@ -5,7 +5,7 @@ These use the `ccall` julia function. It's very easy, although care over
 
 Run `make` to build and run.
 
-Notes:
+### Notes
 
 * If using the REPL, changes in the shared object are not recognized until the
 REPL is restarted
