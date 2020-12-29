@@ -24,9 +24,10 @@ int main(int argc, char *argv[])
     
     // call a base func from julia...   array in, array out
     jl_function_t *func = jl_get_function(jl_base_module, "reverse"); // man
+    //jl_function_t *func = jl_get_function(jl_base_module, "exp"); // segfault
     jl_array_t *bj = (jl_array_t*)jl_call1(func, (jl_value_t*)aj); // jl alloc bj
     
-    // manual 30.7...  (seems to report MethodError if scalar sqrt tried)
+    // manual 30.7...  (seems to report MethodError if scalar exp tried)
     if (jl_exception_occurred())
       printf("uh-oh: %s \n", jl_typeof_str(jl_exception_occurred()));
 
@@ -38,6 +39,7 @@ int main(int argc, char *argv[])
     for (int j=0;j<n;++j) {
       // if (n-j<10) printf("b[%d]=%.15g\n",j,b[j]);  // examine elements
       double e = fabs(a[n-j-1]-b[j]);   // checks the "reverse" func
+      //double e = fabs(exp(a[j])-b[j]);   // checks the "exp" func, fails
       if (e>maxerr) maxerr=e;
     }
     printf("max err = %.3g\n",maxerr);

@@ -5,9 +5,12 @@ LDFL=-I$(JULIA_DIR)/include/julia -L$(JULIA_DIR)/lib -Wl,-rpath=$(JULIA_DIR)/lib
 
 -include ../make.inc
 
-.PHONY: codestring basefunc basearr
+# executables
+E=codestring basefunc basearr
 
-default: codestring basefunc basearr
+.PHONY: $(E)
+
+default: $(E)
 
 codestring: codestring.c
 	$(CC) -o codestring -fPIC codestring.c $(LDFL)
@@ -22,4 +25,4 @@ basearr: basearr.c
 	./basearr
 
 clean:
-	rm -f codestring basefunc basearr
+	rm -f $(E)
