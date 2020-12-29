@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
     jl_init();
 
     /* run Julia commands; this gives text output but not passing values */
-    jl_eval_string("println(sqrt(2.0))");
+    jl_eval_string("a=2.0");
+    jl_eval_string("println(sqrt(a))");  // note this continues the jl session
 
     printf("the above should be julia printing sqrt(2)\n");
 

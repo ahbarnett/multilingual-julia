@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
       a[j] = 1.0 + (double)j/n;             // make some vals in array
 
     // make array type
-    jl_value_t* a_arr_type = jl_apply_array_type((jl_value_t*)jl_float64_type, 1);
+    jl_value_t* a_arr_type = jl_apply_array_type((jl_value_t*)jl_float64_type, 1);  // here 1 is #dims
     int owner = 0;        // so C responsible for freeing it
     jl_array_t *aj = jl_ptr_to_array_1d(a_arr_type, a, n, owner);   // jl ptr
     

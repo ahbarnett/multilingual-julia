@@ -1,0 +1,179 @@
+Calling local Julia package from C
+Asked 1 year, 8 months ago
+Active 1 year, 7 months ago
+Viewed 709 times
+3
+1
+
+The Julia documentation shows examples of how to call Base Julia functions from C (e.g. sqrt), which I've been successful in replicating. What I'm really interested in doing is calling locally developed Julia modules and it's not at all clear from the documentation how one would call non-Base functions. There are some discussion threads on the issue from a few years ago, but the APIs appear to have changed in the meantime. Any pointers would be appreciated.
+c
+julia
+share improve this question follow
+asked May 3 '19 at 12:43
+user888379
+88777 silver badges2525 bronze badges
+
+    I don't know Julia, but could the section Creating C-Compatible Julia Function Pointers help? You might have to kick things off from Julia so you can pass the results of one or more @cfunction calls into C so that your C code can then call the Julia functions at a later date. – TripeHound May 3 '19 at 14:23 
+
+@TripeHound Unfortunately my use-case involves building up and tearing down Julia from within C. – user888379 May 3 '19 at 15:06
+1
+Have you checked if the following instructions docs.julialang.org/en/v1/manual/embedding work for you? In particular have you tried to pass a string to jl_eval_string function that first loads a non-Base module and then executes what you need to execute, or even - at the extreme passing include("path_to_Julia_script_that does_all_the_required_work")? – Bogumił Kamiński May 6 '19 at 15:08
+@BogumiłKamiński Yes, I tried all that before posting my question. jl_eval_string returns a NULL pointer. – user888379 May 6 '19 at 16:53
+
+    Can you please post what is your code exactly. – Bogumił Kamiński May 6 '19 at 21:50
+
+show 1 more comment
+1 Answer
+6
++50
+
+The reason why jl_eval_string("using SomeModule") returns NULL is simply because using SomeModule returns nothing.
+
+You can use functions from other modules by first importing the module, and then retrieving function objects from that Julia module into C. For example, let's use the package GR and its plot function. We can get the plot function with
+
+jl_eval_string("using GR") // this returns nothing
+jl_module_t* GR = (jl_module_t *)jl_eval_string("GR") // this returns the module
+
+/* get `plot` function */
+jl_function_t *plot = jl_get_function(GR, "plot");
+
+Here we passed GR module as the first argument to jl_get_function. We can, knowing the fact that things will be loaded into the module Main and plot is exported from GR, use the following snippet instead to do the same. Note that jl_main_module holds a pointer to the module Main.
+
+jl_eval_string("using GR")
+
+/* get `plot` function */
+jl_function_t *plot = jl_get_function(jl_main_module, "plot");
+
+We can also use plots qualified name.
+
+/* get `plot` function */
+jl_function_t *plot = jl_get_function(jl_main_module, "GR.plot");
+
+That said, here is the complete example plotting an array of values using GR. The example uses the first style to get the function GR.plot.
+
+#include <julia.h>
+
+JULIA_DEFINE_FAST_TLS() // only define this once, in an executable (not in a shared library) if you want fast code.
+
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    /* required: setup the Julia context */
+    jl_init();
+
+    /* create a 1D array of length 100 */
+    double length = 100;
+    double *existingArray = (double*)malloc(sizeof(double)*length);
+
+    /* create a *thin wrapper* around our C array */
+    jl_value_t* array_type = jl_apply_array_type((jl_value_t*)jl_float64_type, 1);
+    jl_array_t *x = jl_ptr_to_array_1d(array_type, existingArray, length, 0);
+
+    /* fill in values */
+    double *xData = (double*)jl_array_data(x);
+    for (int i = 0; i < length; i++)
+        xData[i] = i * i;
+
+    /* import `Plots` into `Main` module with `using`*/
+    jl_eval_string("using GR");
+    jl_module_t* GR = (jl_module_t *)jl_eval_string("GR");;
+
+    /* get `plot` function */
+    jl_function_t *plot = jl_get_function(GR, "plot");
+
+    /* create the plot */
+    jl_value_t* p = jl_call1(plot, (jl_value_t*)x);
+
+
+    /* display the plot */
+    jl_function_t *disp = jl_get_function(jl_base_module, "display");
+    jl_call1(disp, p);
+
+    getchar();
+
+    /* exit */
+    jl_atexit_hook(0);
+    return 0;
+}
+
+Including a Julia module from a local file and use it in C
+
+I do not know what is exactly meant by a local Julia package, but, you can include your files and then import the modules in those files to do the same. Here is an example module.
+
+# Hello.jl
+module Hello
+export foo!
+
+foo!(x) = (x .*= 2) # multiply entries of x by 2 inplace
+
+end
+
+To include this file you need to use jl_eval_string("Base.include(Main, \"Hello.jl\")");. For some reason, embedded Julia cannot access include directly. You need to use Base.include(Main, "/path/to/file") instead.
+
+jl_eval_string("Base.include(Main, \"Hello.jl\")");
+jl_eval_string("using Main.Hello"); // or just '.Hello'
+jl_module_t* Hello = (jl_module_t *)jl_eval_string("Main.Hello"); // or just .Hello
+
+Here is the complete example in C.
+
+#include <julia.h>
+
+JULIA_DEFINE_FAST_TLS() // only define this once, in an executable (not in a shared library) if you want fast code.
+
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    /* required: setup the Julia context */
+    jl_init();
+
+    /* create a 1D array of length 100 */
+    double length = 100;
+    double *existingArray = (double*)malloc(sizeof(double)*length);
+
+    /* create a *thin wrapper* around our C array */
+    jl_value_t* array_type = jl_apply_array_type((jl_value_t*)jl_float64_type, 1);
+    jl_array_t *x = jl_ptr_to_array_1d(array_type, existingArray, length, 0);
+    JL_GC_PUSH1(&x);
+    /* fill in values */
+    double *xData = (double*)jl_array_data(x);
+    for (int i = 0; i < length; i++)
+        xData[i] = i * i;
+
+    /* import `Hello` module from file Hello.jl */
+    jl_eval_string("Base.include(Main, \"Hello.jl\")");
+    jl_eval_string("using Main.Hello");
+    jl_module_t* Hello = (jl_module_t *)jl_eval_string("Main.Hello");
+
+    /* get `foo!` function */
+    jl_function_t *foo = jl_get_function(Hello, "foo!");
+
+    /* call the function */
+    jl_call1(foo, (jl_value_t*)x);
+
+    /* print new values of x */
+    for (int i = 0; i < length; i++)
+        printf("%.1f ", xData[i]);
+
+    printf("\n");
+    JL_GC_POP();
+
+    getchar();
+
+    /* exit */
+    jl_atexit_hook(0);
+    return 0;
+}
+
+share improve this answer follow
+edited May 7 '19 at 10:08
+answered May 7 '19 at 7:12
+hckr
+4,53811 gold badge1515 silver badges2525 bronze badges
+
+    1
+    Sorry to have taken so long to award the bounty - I figured accepting the answer would automatically award it. – user888379 May 12 '19 at 16:38
+
+
+https://stackoverflow.com/questions/55970064/calling-local-julia-package-from-c
