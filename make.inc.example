@@ -1,2 +1,6 @@
-FC=gfortran-9
-CC=gcc-9
+# choose compilers...
+FC=gfortran
+CC=gcc
+
+# your Julia installation...
+JULIA_DIR=/usr/local/julia-1.5.2/

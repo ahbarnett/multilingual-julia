@@ -1,6 +1,6 @@
--include ../make.inc
+include ../make.inc
 
-.PHONY: demo1 demomp
+.PHONY: demo1 demomp clean
 
 default: demo1 demomp
 

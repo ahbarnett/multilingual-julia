@@ -1,16 +1,14 @@
 # Makefile for example calling julia from Fortran.
-
-JULIA_DIR=/usr/local/julia-1.5.2
+include ../make.inc
 
 # linking paths and runtime lib... (same as for C driver)
 LDFL=-I$(JULIA_DIR)/include/julia -L$(JULIA_DIR)/lib -Wl,-rpath=$(JULIA_DIR)/lib -Wl,-rpath=$(JULIA_DIR)/lib/julia -ljulia
 
--include ../make.inc
-
 # executables
 E=modulearr
 
-.PHONY: $(E)
+# having executables here forces rebuild & rerun
+.PHONY: $(E) testjulia clean
 
 default: $(E)
 
@@ -20,7 +18,7 @@ modulearr: modulearr.f90 ArrModF.jl cwrapper.o
 	./$@
 
 cwrapper.o: cwrapper.c
-	$(CC) -c $< -fPIC $(LDFL)
+	$(CC) -c $< -fPIC -I$(JULIA_DIR)/include/julia
 
 testjulia:
 	julia test_arrmodf.jl
