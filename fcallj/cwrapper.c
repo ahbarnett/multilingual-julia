@@ -1,15 +1,17 @@
-// C wrapper utility to allow Fortran to call julia func on existing arrays.
-// Opens a julia session, sends text cmds, loads module then calls a func.
+// C wrapper utility to allow Fortran to call specific julia func.
+// Opens a julia session, sends text cmds, loads module then calls a func which
+// does I/O to arrays allocated on the Fortran (calling) side.
 
 // Has name of julia module and func name and arg types hardwired for now!
 
 #include <julia.h>
 #include <stdio.h>
 
-// I don't know where this should be defined?? :
+// I don't know where this should be defined, give it can't be on F side?? :
 JULIA_DEFINE_FAST_TLS() // only define this once, in an executable (not in a shared library) if you want fast code.
 
 void julia_foomp2_(double* x, double* y, int64_t* nptr, int64_t* ierptr)
+// wrapper for specific julia func foomp2 in a certain module in current dir
 {
   int n = *nptr;
   *ierptr = 0;     // success
@@ -27,15 +29,15 @@ void julia_foomp2_(double* x, double* y, int64_t* nptr, int64_t* ierptr)
   jl_eval_string("push!(LOAD_PATH,\".\")");   // so can use local module in pwd
   jl_eval_string("using ArrModF");
   jl_module_t* mod = (jl_module_t *)jl_eval_string("ArrModF");   // ptr to it
-  // get our func
-  jl_function_t *func = jl_get_function(mod, "foomp2");  // foo or foomp
+  // get our func by name
+  jl_function_t *func = jl_get_function(mod, "foomp2");
 
   // do it
   jl_call2(func, (jl_value_t*)xj, (jl_value_t*)yj);  // reads xj, writes to yj
   
   if (jl_exception_occurred()) {
-      printf("Error in julia_foomp2_: %s \n", jl_typeof_str(jl_exception_occurred()));
-      *ierptr=1;      // error code
+    printf("Error in %s: %s \n", __func__,jl_typeof_str(jl_exception_occurred()));
+    *ierptr=1;      // error code
   }
 
   /* strongly recommended: notify Julia that the
