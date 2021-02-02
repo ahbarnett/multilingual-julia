@@ -29,11 +29,13 @@ function foomp2(x,y)
     end
 end
 
+# sadly the tester shows this wastes a lot of allocation...
 """wrapper around foomp2 that passes integer length, so x,y are ptrs"""
 function foomp2_len(x,y,n)
      foomp2(x[1:n],y[1:n])      # makes jl arrays of right length
 end
 
+# also sadly the tester shows this wastes a lot of allocation...
 """foo demo func, needing length input, writes elementwise exp of float array to 2nd array, Fortran-style, multithreaded works"""
 function foomp3(x,y,n)
     println("n=",n)

@@ -4,7 +4,7 @@ include ../make.inc
 LDFL=-I$(JULIA_DIR)/include/julia -L$(JULIA_DIR)/lib -Wl,-rpath=$(JULIA_DIR)/lib -Wl,-rpath=$(JULIA_DIR)/lib/julia -ljulia
 
 # executables
-E=codestring basefunc basearr modulearr modulearr2
+E=codestring basefunc basearr modulearr modulearr2 testcfunc cfunc
 
 # having executables here forces rebuild & rerun
 .PHONY: $(E) testjulia clean

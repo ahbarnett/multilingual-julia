@@ -15,3 +15,5 @@ foomp2(x,y)           # writes into y
 @time y = foo(x)
 @time y = foomp(x)
 @time foomp2(x,y)
+@time foomp2_len(x,y,n)
+@time foomp3(x,y,n)
