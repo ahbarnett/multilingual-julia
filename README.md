@@ -29,6 +29,10 @@ Edit `make.inc` for your Julia installation directory and choice of compilers
 
 This goes to each directory and makes/runs all examples. Total time is around 10 seconds.
 
+### Other resources
+
+* Julia calling Fortran demos by Daniel Crespo: https://github.com/zyth0s/SciAlgs.jl/tree/master/src/interface_fortran
+
 
 ### To do
 

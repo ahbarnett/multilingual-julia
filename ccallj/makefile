@@ -31,6 +31,14 @@ modulearr2: modulearr2.c ArrMod.jl
 	$(CC) -o $@ -fPIC $< $(LDFL) -lm
 	./$@
 
+testcfunc: testcfunc.c
+	$(CC) -o $@ -fPIC $< $(LDFL) -lm
+	./$@
+
+cfunc: cfunc.c ArrMod.jl
+	$(CC) -o $@ -fPIC $< $(LDFL) -lm
+	./$@
+
 testjulia:
 	julia test_arrmod.jl
 
