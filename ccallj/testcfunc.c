@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   test = (test_ptr) jl_unbox_voidpointer(ret);     // convert to C func ptr
   printf("user jl func double in, double out: x=%g, y=%g (should be %g)\n\n",x,test(x),exp(x));
 
-  // now wrap a func returning void...
+  // now wrap a func returning void... just prints the value
   jl_eval_string("function test1(x) println(x) end");
   ret = jl_eval_string("@cfunction(test1, Cvoid, (Cdouble,))");
   test1 = (test1_ptr) jl_unbox_voidpointer(ret);     // convert to C func ptr
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   // now wrap a func returning void and taking in array of given length...
   //jl_eval_string("function test2(x::Array{Float64,1},n::Int64) println(maximum(x[1:n])) end");
   jl_eval_string("function test2(x,n) println(maximum(x[1:n])) end");
-  ret = jl_eval_string("@cfunction(test2, Cvoid, ({Ref}Cdouble, Cint))");
+  ret = jl_eval_string("@cfunction(test2, Cvoid, (Ref{Cdouble}, Cint))");
   test2 = (test2_ptr) jl_unbox_voidpointer(ret);     // convert to C func ptr
   double a[4] = {1.0,2.0,7.0,3.0};
   test2(a,4);
