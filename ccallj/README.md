@@ -30,6 +30,8 @@ https://stackoverflow.com/questions/55970064/calling-local-julia-package-from-c
 
 * You will need to set env var `JULIA_NUM_THREADS` to access multithreading on the julia side.
 
+* Here is a useful discourse thread on C calling Julia: https://discourse.julialang.org/t/passing-a-c-struct-into-julia/43965/16
+
 
 ### Examples
 
