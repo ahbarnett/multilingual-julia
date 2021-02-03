@@ -18,3 +18,6 @@ foomp2_wrap(pointer(x),pointer(y),n)
 @time y = foomp(x)
 @time foomp2(x,y)
 @time foomp2_wrap(pointer(x),pointer(y),n)
+t = @elapsed foomp2_wrap(pointer(x),pointer(y),n)
+using Printf
+@printf "foomp2_wrap took %.3g s: %.3g Geval/s\n" t n/t/1e9
