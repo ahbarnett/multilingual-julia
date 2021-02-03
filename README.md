@@ -1,9 +1,16 @@
 # multilingual-julia
 
-Minimally complete examples of interfacing between Julia and low-level languages, including the uncommon case of _Fortran calling Julia_.
-Taken from Julia docs, StackOverflow, etc, by Alex Barnett.
-Tested in a linux environment only (Ubuntu 16.04 LTS plus GCC9, Julia 1.5.2).
+Minimally complete examples of interfacing between Julia and low-level languages, including the uncommon and undocumented case of _Fortran calling Julia_.
+Interoperability between languages is essential if Julia is to integrate with scientific codebases in Fortran and C. One cannot always assume that Julia will be the top-level/driver environment. Libraries written in Julia should be able to be called by Fortran/C users. This motivates this simple set of tutorial examples. Please help by expanding it.
 
+The focus is:
+* calling user-written Julia functions from C/Fortran  
+* passing arrays (their allocation being on the C/Fortran side)  
+* using multithreading  
+
+They are tested in a linux environment only (Ubuntu 16.04 LTS plus GCC9, Julia 1.5.2).
+
+Thanks to: Julia docs, StackOverflow, Julia Discourse, especially to Steven G Johnson.
 
 ### Contents
 
@@ -13,11 +20,11 @@ Tested in a linux environment only (Ubuntu 16.04 LTS plus GCC9, Julia 1.5.2).
 
 Each directory has its own makefile. They all read any common settings placed in `make.inc` (eg copy `make.inc.example` to this file). Some demos explore multithreading in the "inner" (called) function. Some also report timings (which adds a few lines of code beyond the "minimal").
 
+There are notes and resource links in each directory.
 
 ### Requirements
 
-Julia installed, C complier, Fortran compiler, GNU `make`.
-
+Recent Julia installed, C complier, Fortran compiler, GNU `make`.
 
 ### Testing
 
@@ -29,11 +36,6 @@ Edit `make.inc` for your Julia installation directory and choice of compilers
 
 This goes to each directory and makes/runs all examples. Total time is around 10 seconds.
 
-### Other resources
-
-* Julia calling Fortran demos by Daniel Crespo: https://github.com/zyth0s/SciAlgs.jl/tree/master/src/interface_fortran
-
-
 ### To do
 
 * J calling F with non-void return type, eg `ddot` LAPACK in manual 27.5
@@ -44,4 +46,4 @@ This goes to each directory and makes/runs all examples. Total time is around 10
 
 * passing function handles in either direction (probably hard)
 
-* more general C wrapper utilities for F calling J funcs with simple array args
+* expanded array
