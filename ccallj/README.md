@@ -9,6 +9,7 @@ It is clumsy (boxing/unboxing required), and gets moreso for complicated functio
 
 2) Packaging the Julia code on the Julia side as a `@cfunction` which can be accessed from C via a couple of `jl_*` calls. Although the signature must match, this is a much more lightweight approach, nearly as simple as one could hope for. However, it is documented for only one simple scalar case. We remedy that here.
 
+We recommend 2; it is much neater.
 This directory has minimally complete tutorial examples of both, starting simple then getting more complicated. Goals:
 
 * accessing functions within a user-written Julia module  
@@ -39,7 +40,7 @@ Cfunction wrapping convention (style 2):
 `cfunction1` : basic call of native jl func with scalar I/O
 `cfunction2` : call user-defined jl func with scalar I/O
 `cfunctionarr` : call user-defined jl func, with array input  
-`cfuncmodarr` : call user-defined jl func in a module, with array I/O  
+`cfuncmodarr` : call user-defined jl func in a module, with array I/O, timing  
 
 
 ### Notes

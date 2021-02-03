@@ -49,24 +49,18 @@ int main(int argc, char *argv[])
     if (jl_exception_occurred())
       printf("uh-oh: %s \n", jl_typeof_str(jl_exception_occurred()));
     
-    // check b
+    // check result in b...
     clock_gettime(CLOCK_REALTIME, &t0);
     double maxerr = 0.0;
     for (int j=0;j<n;++j) {
-      double e = fabs(exp(a[j])-b[j]);   // checks the "exp" func, fails
+      double e = fabs(exp(a[j])-b[j]);
       if (e>maxerr) maxerr=e;
     }
     clock_gettime(CLOCK_REALTIME, &t1);
     t=(t1.tv_sec-t0.tv_sec)+(t1.tv_nsec-t0.tv_nsec)/1.0e9;
     printf("max err = %.3g  (single-threaded C took %.3g s)\n",maxerr,t);
     
-    /* strongly recommended: notify Julia that the
-         program is about to terminate. this allows
-         Julia time to cleanup pending write requests
-         and run all finalizers
-    */
-    jl_atexit_hook(0);
-
+    jl_atexit_hook(0);                 // clean up
     free(a); free(b);
     return 0;
 }
