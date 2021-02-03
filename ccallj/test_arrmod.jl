@@ -5,15 +5,16 @@ using ArrMod
 
 n=Int(1e7)
 x = rand(n)
+
+# warm up all methods...
 foo(x)
 foomp(x)
-
-y = similar(x)        # needs allocation
+y = similar(x)        # output needs allocation
 foomp2(x,y)           # writes into y
+foomp2_wrap(pointer(x),pointer(y),n)
 
-# note all funcs have already been called before we attempt to time them...
+# time all methods...
 @time y = foo(x)
 @time y = foomp(x)
 @time foomp2(x,y)
-@time foomp2_len(x,y,n)
-@time foomp3(x,y,n)
+@time foomp2_wrap(pointer(x),pointer(y),n)

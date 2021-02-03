@@ -1,10 +1,10 @@
 module ArrMod
-# example module doing something in julia to test calling from C.
-# Also see test_arrmod.jl
+# example module doing something to an array in julia, to test calling from C.
+# For usage see: test_arrmod.jl
 
 using Base.Threads                     # use OMP
 
-export foo, foomp, foomp2, foomp2_len, foomp3
+export foo, foomp, foomp2, foomp2_wrap
 
 println("loaded ArrMod: num threads: ",Threads.nthreads())
 
@@ -29,21 +29,14 @@ function foomp2(x,y)
     end
 end
 
-# sadly the tester shows this wastes a lot of allocation...
-"""wrapper around foomp2 that passes integer length, so x,y are ptrs"""
-function foomp2_len(x,y,n)
-     foomp2(x[1:n],y[1:n])      # makes jl arrays of right length
+"""C-style wrapper to foomp2, passing in pointers and array lengths""" 
+function foomp2_wrap(xptr,yptr,n)
+#   @show xptr; @show yptr; @show n;       # for debug
+    x=unsafe_wrap(Array,xptr,(n,))         # input
+    y=unsafe_wrap(Array,yptr,(n,))         # output
+    foomp2(x,y)
+    nothing
 end
-
-# also sadly the tester shows this wastes a lot of allocation...
-"""foo demo func, needing length input, writes elementwise exp of float array to 2nd array, Fortran-style, multithreaded works"""
-function foomp3(x,y,n)
-    println("n=",n)
-    @threads for i in 1:n         # use OMP
-        y[i] = exp(x[i])
-    end
-end
-
 
 end   # module
 
