@@ -43,6 +43,7 @@ int main()
   jl_eval_string("using ArrMod");
   jl_eval_string("a=rand(10); b=similar(a); foomp2_wrap(pointer(a),pointer(b),10); println(\"err:\",maximum(abs.(b-exp.(a))))");    // optional: test in pure jl
   jl_value_t *ret = jl_eval_string("@cfunction(foomp2_wrap, Cvoid, (Ptr{Cdouble},Ptr{Cdouble},Cint))");
+  // note following conversion of ret must happen before any other jl_* calls!
   myfun = (myfun_ptr) jl_unbox_voidpointer(ret);    // convert to C func ptr
   
   clock_gettime(CLOCK_REALTIME, &t1);
