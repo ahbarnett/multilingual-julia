@@ -1,14 +1,13 @@
-// C wrapper utility to allow Fortran to call specific julia func.
+// C wrapper utility to allow Fortran to call a specific julia func.
 // Opens a julia session, sends text cmds, loads module then calls a func which
 // does I/O to arrays allocated on the Fortran (calling) side.
 
-// Has name of julia module and func name and arg types hardwired for now!
+// Has name of julia module and func name and arg types hardwired.
 
 #include <julia.h>
-#include <stdio.h>
+JULIA_DEFINE_FAST_TLS()
 
-// I don't know where this should be defined, give it can't be on F side?? :
-JULIA_DEFINE_FAST_TLS() // only define this once, in an executable (not in a shared library) if you want fast code.
+#include <stdio.h>
 
 void julia_foomp2_(double* x, double* y, int64_t* nptr, int64_t* ierptr)
 // wrapper for specific julia func foomp2 in a certain module in current dir

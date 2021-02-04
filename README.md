@@ -34,7 +34,7 @@ Edit `make.inc` for your Julia installation directory and choice of compilers
 
 `make`
 
-This goes to each directory and makes/runs all examples. Total time is around 10 seconds.
+This goes to each directory and makes/runs all examples. Total wall-clock time is around 20 seconds.
 
 ### To do
 

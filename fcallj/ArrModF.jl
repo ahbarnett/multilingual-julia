@@ -4,7 +4,7 @@ module ArrModF
 
 using Base.Threads
 
-export foomp2
+export foomp2, foomp2_wrap
 
 println("loaded ArrModF: num threads: ",Threads.nthreads())
 
@@ -14,6 +14,15 @@ function foomp2(x,y)
     @threads for i in eachindex(x)
         y[i] = exp(x[i])
     end
+end
+
+"""C-style wrapper to foomp2, passing in pointers and array lengths""" 
+function foomp2_wrap(xptr,yptr,n)
+#   @show xptr; @show yptr; @show n; println(typeof(n))      # debug
+    x=unsafe_wrap(Array,xptr,(n,))         # make jl array, input
+    y=unsafe_wrap(Array,yptr,(n,))         # output
+    foomp2(x,y)
+    nothing                                # needed for void
 end
 
 end   # module

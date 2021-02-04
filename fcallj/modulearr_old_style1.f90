@@ -1,7 +1,7 @@
 ! example of calling Julia func in a user module from Fortran (via C wrapper).
 ! The function is foomp2 (elementwise exp of 1D array) also tested in ../ccallj
 ! Also does timing, for kicks.
-! Barnett 2/3/21
+! Barnett 12/29/20
 
 program modulearr
   implicit none
@@ -11,36 +11,28 @@ program modulearr
 
   ! for timing...
   integer*8 t1,t2,crate
-  real t
+  real*8 t
 
-  call system_clock(t1)
-  call julia_setup(ier)
-  call system_clock(t2,crate)
-  t = (t2-t1)/float(crate)
-  print *,'julia_setup done in ',t,' sec, ier=',ier
-  if (ier.ne.0) then
-     error stop
-  endif
-  
-  n = int8(5.0e7)
+  n = int(1.0e8)
   ! I & O arrays...
-  call system_clock(t1)
   allocate(x(n))
   print *,'filling input array, n=',n
+  call system_clock(t1)
   do i=1,n
      x(i) = 1.0 + float(i)/n
   enddo
-  allocate(y(n))
-  call system_clock(t2)
+  call system_clock(t2,crate)
   t = (t2-t1)/float(crate)
-  print *,'done in ',t,' sec. Calling foomp2...'
+  allocate(y(n))
+  print *,'done in ',t,' sec. Calling wrapper...'
 
-  ! do it (note: n must be int*8)
-  call julia_foomp2(x,y,n)
+  ! this wrapper is specific to the func. We'd instead want general wrappers...
+  call julia_foomp2(x,y,n,ier)
   
   call system_clock(t1)
   t = (t1-t2)/float(crate)
-  print *,'julia call done, time: ',t,' sec: ',n/t/1.0E9,' Geval/s'
+  print *,'julia call done, ier=',ier,' (should be 0)'
+  print *,'time: ',t,' sec (',n/t/1.0D9,' Geval/s)'
 
   ! math check
   maxerr = 0.0
@@ -50,9 +42,6 @@ program modulearr
         maxerr = err
      endif
   enddo
-  call system_clock(t2)
-  t = (t2-t1)/float(crate)
-  print *,'max err = ',maxerr, '(took ',t,' sec singlethreaded Fortran)'
-
-  call julia_cleanup
+  print *,'max err = ',maxerr
+  
 end program modulearr

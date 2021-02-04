@@ -32,7 +32,7 @@ end
 """C-style wrapper to foomp2, passing in pointers and array lengths""" 
 function foomp2_wrap(xptr,yptr,n)
 #   @show xptr; @show yptr; @show n;       # for debug
-    x=unsafe_wrap(Array,xptr,(n,))         # input
+    x=unsafe_wrap(Array,xptr,(n,))         # make jl array, input
     y=unsafe_wrap(Array,yptr,(n,))         # output
     foomp2(x,y)
     nothing
