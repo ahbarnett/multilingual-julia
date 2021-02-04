@@ -28,11 +28,11 @@ Recent Julia installed, C complier, Fortran compiler, GNU `make`.
 
 ### Testing
 
-`cp make.inc.example make.inc`
+1. `cp make.inc.example make.inc`
 
-Edit `make.inc` for your Julia installation directory and choice of compilers
+1. Edit `make.inc` for your Julia installation directory and choice of compilers
 
-`make`
+1. `make`
 
 This goes to each directory and makes/runs all examples. Total wall-clock time is around 20 seconds.
 

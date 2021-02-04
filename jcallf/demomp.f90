@@ -1,8 +1,8 @@
-!  demo calling OMP routine in Fortran90.
-!  compile into a shared object; see makefile.
+!  Demo calling OMP routine in Fortran90.
+!  Compile into a shared object; see makefile.
 
 SUBROUTINE sumexp(a,ans,n)
-  ! sums the exp of real array a, length n
+  ! sums the exp of double array a, length n
   use omp_lib               ! needed to access types of omp_ calls
   implicit none
   integer*8 n,i

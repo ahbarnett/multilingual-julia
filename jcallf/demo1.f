@@ -1,9 +1,9 @@
-c     compile into a shared object via:
+c     Compile into a shared object via:
 c     gfortran demo1.f -o demo1.so -shared -fPIC
-c     seems like need to restart julia to take effect (reimport the .so)
+c     Seems like need to restart julia to take effect (reimport the .so)
       
       SUBROUTINE MULTIPLY(A,B,C)
-c     multiplies two floats
+c     multiplies two doubles
       real*8 A,B,C
 c     print *,'A=',A
       C = A*B

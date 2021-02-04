@@ -26,21 +26,21 @@ Take a look: there is a function `foomp` (and its variants) that we want to acce
 
 Hello-world example:
 
-`codestring` : call single line of julia code, no passing of values; straight from the manual  
+* `codestring` : call single line of julia code, no passing of values; straight from the manual
 
 Julia convention (style 1):
 
-`basefunc` : pass scalar input and output to a single existing (Base) julia function; from manual  
-`basearr` : array I/O to existing (Base) julia func; similar to manual 30.6  
-`modulearr` : array I/O to user julia func in module; from above SO post. J allocs the output array. Fails only if multithreaded  
-`modulearr2` : same, except Fortran-style, output array preallocated on the C side. Works multithreaded   
+* `basefunc` : pass scalar input and output to a single existing (Base) julia function; from manual
+* `basearr` : array I/O to existing (Base) julia func; similar to manual 30.6  
+* `modulearr` : array I/O to user julia func in module; from above SO post. J allocs the output array. Fails only if multithreaded
+* `modulearr2` : same, except Fortran-style, output array preallocated on the C side. Works multithreaded
 
 Cfunction wrapping convention (style 2):
 
-`cfunction1` : basic call of native jl func with scalar I/O  
-`cfunction2` : call user-defined jl func with scalar I/O  
-`cfunctionarr` : call user-defined jl func, with array input  
-`cfuncmodarr` : call user-defined jl func in a module, with array I/O, timing  
+* `cfunction1` : basic call of native jl func with scalar I/O
+* `cfunction2` : call user-defined jl func with scalar I/O
+* `cfunctionarr` : call user-defined jl func, with array input
+* `cfuncmodarr` : call user-defined jl func in a module, with array I/O, timing
 
 
 ### Notes
