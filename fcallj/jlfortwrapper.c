@@ -26,8 +26,9 @@ void julia_setup_(int64_t* ierptr)
   jl_eval_string("push!(LOAD_PATH,\".\")");   // so can use a local module
   jl_eval_string("using ArrModF");
   jl_value_t *ret = jl_eval_string("@cfunction(foomp2_wrap, Cvoid, (Ptr{Cdouble},Ptr{Cdouble},Cint))");
+  // following conversion of ret must happen before any other jl_* call, including the exception checking, else seemingly segfaults!...
   foomp2 = (foomp2_ptr) jl_unbox_voidpointer(ret);    // convert to C func ptr
-  // note this processing of ret value must happen before any other jl_* call, including the exception checking, else seemingly segfaults!
+
   // printf("foomp2 ptr = %p\n",foomp2);      // debug
   if (jl_exception_occurred()) {
     printf("Error in %s cfunction: %s \n", __func__,jl_typeof_str(jl_exception_occurred()));

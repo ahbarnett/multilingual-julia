@@ -22,7 +22,7 @@ jlfortwrapper.o: jlfortwrapper.c
 
 modulearr_old_style1: modulearr_old_style1.f90 ArrModF.jl cwrapper_old_style1.o
 # note linking order: f90 needs cwrapper which needs -ljulia, so precede them
-	$(FC) -o $@ -fPIC $< cwrapper.o -lstdc++ $(LDFL)
+	$(FC) -o $@ -fPIC $< cwrapper_old_style1.o -lstdc++ $(LDFL)
 	./$@
 
 cwrapper_old_style1.o: cwrapper_old_style1.c

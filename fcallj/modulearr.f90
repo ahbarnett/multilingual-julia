@@ -1,6 +1,7 @@
 ! example of calling Julia func in a user module from Fortran (via C wrapper).
-! The function is foomp2 (elementwise exp of 1D array) also tested in ../ccallj
-! Also does timing, for kicks.
+! This func is foomp2 (elementwise exp of 1D array), also tested in ../ccallj
+! Also does timing, and test, for kicks.
+! Note the wrapper has 3 routines: julia_setup, julia_foomp2, julia_cleanup.
 ! Barnett 2/3/21
 
 program modulearr
