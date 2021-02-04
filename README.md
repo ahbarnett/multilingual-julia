@@ -46,4 +46,3 @@ This goes to each directory and makes/runs all examples. Total wall-clock time i
 
 * passing function handles in either direction (probably hard)
 
-* expanded array

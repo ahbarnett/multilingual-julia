@@ -37,8 +37,8 @@ Julia convention (style 1):
 
 Cfunction wrapping convention (style 2):
 
-`cfunction1` : basic call of native jl func with scalar I/O
-`cfunction2` : call user-defined jl func with scalar I/O
+`cfunction1` : basic call of native jl func with scalar I/O  
+`cfunction2` : call user-defined jl func with scalar I/O  
 `cfunctionarr` : call user-defined jl func, with array input  
 `cfuncmodarr` : call user-defined jl func in a module, with array I/O, timing  
 
@@ -52,12 +52,12 @@ Cfunction wrapping convention (style 2):
 * Here is my thread on this (thanks to those who answered): https://discourse.julialang.org/t/i-made-examples-of-wrapping-jl-code-from-fortran-c-how-generalize/
 
 * Here are some notes on the Julia calling convention (route 1):
- - https://stackoverflow.com/questions/55970064/calling-local-julia-package-from-c
- - https://discourse.julialang.org/t/passing-a-c-struct-into-julia/43965/16  
- - Boxing/unboxing is awkward, in the style of MEX wrappers, and low-level garbage collector macros needed to prevent GC from freeing pointers to jl returned values (boxed ones).  
+  * https://stackoverflow.com/questions/55970064/calling-local-julia-package-from-c
+  * https://discourse.julialang.org/t/passing-a-c-struct-into-julia/43965/16  
+  * Boxing/unboxing is awkward, in the style of MEX wrappers, and low-level garbage collector macros needed to prevent GC from freeing pointers to jl returned values (boxed ones).  
 
 * Here are some notes on the `@cfunction` approach (route 2):
- - For passing arrays (they use `unsafe_load` instead of my `unsafe_wrap`): https://github.com/GunnarFarneback/DynamicallyLoadedEmbedding.jl/pull/3  
+  * For passing arrays (they use `unsafe_load` instead of my `unsafe_wrap`): https://github.com/GunnarFarneback/DynamicallyLoadedEmbedding.jl/pull/3  
 
 * Reading `julia.h` is not much use, and is super complicated. Eg here's a comment from it:
 ```
