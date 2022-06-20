@@ -3,7 +3,7 @@
 push!(LOAD_PATH,".")
 using ArrModF
 
-n=Int(1e7)
+n=Int(1e7)            # reasonable size to test speed
 x = rand(n)
 y = similar(x)        # needs allocation
 

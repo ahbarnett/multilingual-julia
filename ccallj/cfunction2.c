@@ -8,7 +8,7 @@ gcc-9 -Wall -g -o democfunction2 -fPIC democfunction2.c -I$JULIA_DIR/include/jul
 */
 
 #include <julia.h>
-JULIA_DEFINE_FAST_TLS()
+JULIA_DEFINE_FAST_TLS
 #include <math.h>
 
 typedef double (*myfun_ptr)(double);         // ptr type for func's C signature

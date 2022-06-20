@@ -8,7 +8,7 @@ gcc-9 -Wall -g -o cfunction1 -fPIC cfunction1.c -I$JULIA_DIR/include/julia -L$JU
 */
 
 #include <julia.h>
-JULIA_DEFINE_FAST_TLS()
+JULIA_DEFINE_FAST_TLS
 #include <math.h>
 
 typedef double (*myfun_ptr)(double);         // ptr type for func's C signature

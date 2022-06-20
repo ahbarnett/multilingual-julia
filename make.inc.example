@@ -3,4 +3,4 @@ FC=gfortran
 CC=gcc
 
 # your Julia installation...
-JULIA_DIR=/usr/local/julia-1.5.2/
+JULIA_DIR=/home/alex/julia-1.7.1/

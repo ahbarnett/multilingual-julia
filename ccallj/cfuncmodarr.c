@@ -17,7 +17,7 @@ max err = 8.88e-16  (single-threaded C took 1.69 s)
 */
 
 #include <julia.h>
-JULIA_DEFINE_FAST_TLS()
+JULIA_DEFINE_FAST_TLS
 
 #include <stdio.h>
 #include <math.h>

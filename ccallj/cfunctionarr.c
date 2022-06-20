@@ -13,7 +13,7 @@ cfunctionarr.c: should have printed 7.0
 */
 
 #include <julia.h>
-JULIA_DEFINE_FAST_TLS()
+JULIA_DEFINE_FAST_TLS
 
 typedef void (*myfun_ptr)(double*, int);     // ptr type for func's C signature
 myfun_ptr myfun = NULL;                      // instantiate a ptr

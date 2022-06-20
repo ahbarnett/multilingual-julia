@@ -5,7 +5,7 @@
 // Has name of julia module and func name and arg types hardwired.
 
 #include <julia.h>
-JULIA_DEFINE_FAST_TLS()
+JULIA_DEFINE_FAST_TLS
 
 #include <stdio.h>
 

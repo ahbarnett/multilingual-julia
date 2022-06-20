@@ -5,7 +5,7 @@
 #include <julia.h>
 #include <math.h>
 
-JULIA_DEFINE_FAST_TLS() // only define this once, in an executable (not in a shared library) if you want fast code.
+JULIA_DEFINE_FAST_TLS // only define this once, in an executable (not in a shared library) if you want fast code.
 
 int main(int argc, char *argv[])
 {

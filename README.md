@@ -8,7 +8,7 @@ The focus is:
 * passing arrays (their allocation being on the C/Fortran side)  
 * using multithreading  
 
-They are tested in a linux environment only (Ubuntu 16.04 LTS plus GCC9, Julia 1.5.2).
+They are tested in a linux environment only (Ubuntu 21.04, GCC10, Julia 1.7.1).
 
 Thanks to: Julia docs, StackOverflow, Julia Discourse, especially to Steven G Johnson.
 
