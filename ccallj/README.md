@@ -67,6 +67,11 @@ Cfunction wrapping convention (style 2):
 ```
 Yikes!
 
+* The runtime library loads in around 180 MB even for a hello-world example.
+  To demo this, try `/usr/bin/time -f "%M" ./codestring` which displays
+  the max RAM usage in kB, giving `178484` in my setup. This is huge.
+  See: https://viralinstruction.com/posts/badjulia/
+
 
 ### Questions / To do
 
