@@ -2,7 +2,7 @@
 
 default: all
 
-D=jcallf ccallj fcallj
+D=jcallf ccallj fcallj pcallj
 
 all:
 	for i in $D; do echo "=============== $$i: ==============="; \

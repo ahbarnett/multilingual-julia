@@ -1,7 +1,7 @@
 # multilingual-julia
 
-Minimally complete examples of interfacing between Julia and low-level languages, including the uncommon and undocumented case of _Fortran calling Julia_.
-Interoperability between languages is essential if Julia is to integrate with scientific codebases in Fortran and C. One cannot always assume that Julia will be the top-level/driver environment. Libraries written in Julia should be able to be called by Fortran/C users. This motivates this simple set of tutorial examples. Please help by expanding it.
+Minimally complete examples of interfacing between Julia and various languages, including the uncommon and undocumented case of _Fortran calling Julia_.
+Interoperability between languages is essential if Julia is to integrate with scientific codebases in Fortran, C, and Python. One cannot always assume that Julia will be the top-level/driver environment. Libraries written in Julia should be able to be called by Fortran/C/Py users. This motivates this simple set of tutorial examples. Please help by expanding it.
 
 The focus is:
 * calling user-written Julia functions from C/Fortran  
@@ -17,8 +17,9 @@ Thanks to: Julia docs, StackOverflow, Julia Discourse, especially to Steven G Jo
 `jcallf` : Julia calls Fortran (ie, wrapping low-level language functions)  
 `ccallj` : C calls Julia ("embedding")  
 `fcallj` : Fortran calls Julia ("embedding", but needs intermediate C layer)  
+`pcallj` : Python calls Julia (needs various Py and Jl packages, see makefile)  
 
-Each directory has its own makefile. They all read any common settings placed in `make.inc` (eg copy `make.inc.example` to this file). Some demos explore multithreading in the "inner" (called) function. Some also report timings (which adds a few lines of code beyond the "minimal").
+Each directory has its own makefile, which read any common settings placed in the top-level file `make.inc` (thus, you will need to copy `make.inc.example` to this file). Some demos explore multithreading in the "inner" (called) function. Some also report timings (which adds a few lines of code beyond the "minimal").
 
 There are notes and resource links in each directory.
 
@@ -34,7 +35,7 @@ Recent Julia installed, C complier, Fortran compiler, GNU `make`.
 
 1. `make`
 
-This goes to each directory and makes/runs all examples. Total wall-clock time is around 20 seconds.
+This goes to each directory and makes/runs all examples. Total wall-clock time is around 30 seconds, a lot due to Julia first-run times.
 
 ### To do
 
