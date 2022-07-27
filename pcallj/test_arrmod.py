@@ -5,13 +5,13 @@
 
 # set up py-calling-jl interface:
 import julia
-#julia.install()   # optional; use to set up
+julia.install()   # optional; use to set up
 
-# following two lines needed since libpython is not dynamically linked...
-# (see docs for pyjulia). They don't seem to work in a script!
+# following two lines needed for me since libpython is not dynamically linked...
+# (see docs for pyjulia). They don't seem to work in a script, only REPL!
 from julia.api import Julia
 jl = Julia(compiled_modules=False)
-# takes several seconds from Python REPL
+# & takes several seconds from Python REPL
 
 # Warm-up 1: test something from Base...
 from julia import Base
@@ -38,7 +38,7 @@ print("pyjulia ArrMod.foomp test error: ",np.linalg.norm(y-y2)/np.linalg.norm(y2
 # Can modify a python array from julia, via ctypes, a bit messy:
 # https://github.com/JuliaPy/pyjulia/issues/385
 
-# timings for above (py 2.5x faster than jl; since not using simd?)
+# timings for above (py 2.5x faster than jl; since no attempt to SIMD in jl)
 import time
 t0 = time.time()
 y = Main.ArrMod.foomp(x)   # test version passing out array
